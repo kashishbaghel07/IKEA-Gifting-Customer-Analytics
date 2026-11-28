@@ -1,2 +1,319 @@
-# IKEA-Gifting-Customer-Analytics
-End-to-end customer analytics and RFM segmentation project using SQL Server, Python and Power BI.
+# IKEA Gifting – Customer Analytics & RFM Segmentation
+
+**An End-to-End Data Analytics Portfolio Project using SQL Server, Python and Power BI**
+
+---
+
+## 📌 Project Overview
+
+This is an end-to-end Data Analytics portfolio project focused on understanding customer purchasing behaviour, identifying valuable customer segments and analysing customer churn.
+
+The project simulates a customer analytics engagement for a fictional UK-based gifting and home décor business named **IKEA Gifting**.
+
+I developed this project by following the educational tutorial series by **Mansi G.**, an Analytics Engineer and Data Analyst content creator. Through this project, I gained practical experience integrating SQL Server, Python and Power BI into a connected data analytics workflow.
+
+The objective is to transform raw retail transaction data into meaningful customer insights through data preparation, RFM analysis, customer segmentation, churn identification and interactive visualisation.
+
+## ⚠️ Disclaimer
+
+IKEA Gifting is a fictional company name created for this educational portfolio project. This project is not affiliated with, endorsed by or representative of the real IKEA corporation.
+
+The analysis is based on the publicly available and anonymised Online Retail II dataset. The IKEA-inspired visual branding is used for educational design and presentation purposes only.
+
+All financial figures, customer counts and business metrics are derived from the analysed dataset and do not represent the actual performance of IKEA or any real company.
+
+---
+
+## 🎯 Business Problem
+
+The business wants to understand its customers better, identify its most valuable customers and recognise customers who have stopped purchasing or may be at risk of churn.
+
+Without structured customer analysis, it becomes difficult to understand customer purchasing behaviour, customer value and retention patterns.
+
+This project applies RFM analysis and customer segmentation to explore these business requirements and support data-driven marketing and customer retention decisions.
+
+## 📋 Business Questions
+
+The Business Requirements Document (BRD) identifies five key business questions:
+
+1. Who are the most valuable customers, and how much revenue do they contribute?
+2. Which customers have gone quiet or are at risk of churn?
+3. How do customer value and retention change monthly, quarterly and yearly?
+4. Are there geographic differences in customer value and churn?
+5. What actions should the business take for each customer segment?
+
+---
+
+## 📂 Dataset
+
+| Detail | Description |
+|---|---|
+| Dataset | Online Retail II |
+| Source | UCI Machine Learning Repository |
+| Original records | 1,067,371 |
+| Period | December 2009 – December 2011 |
+| Data type | Retail transaction data |
+| Currency | GBP (£) |
+
+The dataset contains transaction-level information from a UK-based online retailer, including invoice details, product information, quantities, prices, customer IDs and countries.
+
+**Dataset Source:** [UCI Machine Learning Repository – Online Retail II](https://archive.ics.uci.edu/dataset/502/online+retail+ii)
+
+---
+
+## 🛠️ Tools & Technologies
+
+| Tool | Purpose |
+|---|---|
+| SQL Server / SSMS | Data integration, cleaning, duplicate removal and data validation |
+| Python | Data preprocessing and customer-level analysis |
+| Pandas | Data manipulation and RFM calculations |
+| Jupyter Notebook | Python analysis and implementation |
+| Power BI Desktop | Interactive dashboard development |
+| DAX | Measures for customer counts, revenue, average customer value and churn |
+
+---
+
+## 🔄 Project Workflow
+
+### Step 1 – Business Requirements Document (BRD)
+
+Started with a Business Requirements Document to understand the business problem, define project objectives, identify key business questions and establish the project scope.
+
+### Step 2 – SQL Server: Data Integration & Cleaning
+
+Used SQL Server to prepare the raw retail transaction data.
+
+**Work performed:**
+
+- Imported the two yearly retail datasets.
+- Combined the datasets using SQL.
+- Checked and converted data types.
+- Validated date and price conversions.
+- Examined missing customer information.
+- Identified and removed exact duplicate records using SQL window functions.
+- Examined cancelled transactions and unusual transaction values.
+- Performed data quality checks and validation.
+
+**Data cleaning results:**
+
+| Metric | Result |
+|---|---:|
+| Original combined records | 1,067,371 |
+| Cleaned records | 1,033,036 |
+| Exact duplicate groups identified | 32,907 |
+| Extra duplicate rows removed | 34,335 |
+
+### Step 3 – Python: RFM Analysis
+
+Used Python and Pandas to calculate customer-level RFM metrics.
+
+RFM represents three customer purchasing dimensions:
+
+- **Recency:** Number of days since the customer's most recent purchase.
+- **Frequency:** Number of distinct purchase transactions.
+- **Monetary:** Total revenue generated by the customer.
+
+Customers were assigned scores from 1 to 5 for each RFM dimension using `pandas.qcut()`.
+
+**Data preparation and filtering:**
+
+The Python analysis uses transaction records with a non-null `Customer_ID` and `Quantity > 0` for RFM calculations.
+
+No separate filter is applied for zero or negative prices or cancelled invoice prefixes.
+
+Recency scores are assigned in reverse order, where a higher R Score represents a more recent purchase. Frequency and Monetary scores increase with higher values.
+
+**Python output:**
+
+| Metric | Result |
+|---|---:|
+| Customers analysed | 5,881 |
+| Transaction records in final exported dataset | 779,495 |
+
+### Step 4 – Customer Segmentation
+
+Based on the RFM scores, customers were classified into six segments using rule-based conditions.
+
+| Customer Segment | Description |
+|---|---|
+| Champions | Customers with high R, F and M scores |
+| Loyal | Customers with R and F scores of at least 3 |
+| At Risk | Customers with lower R scores and higher F scores |
+| New | Recently active customers with lower F scores |
+| Needs Attention | Customers with a middle R score and lower F scores |
+| Lost | Customers who do not meet the other segment conditions |
+
+### Step 5 – Churn Identification
+
+Implemented a fixed 90-day inactivity rule to identify customers who have not purchased recently.
+
+The Python implementation marks customers as churned when:
+
+`Recency > 90`
+
+This is a rule-based churn identification method, not a predictive machine learning model.
+
+### Step 6 – Power BI: Dashboard Development
+
+Used the processed analytical dataset to develop an interactive three-page Power BI dashboard.
+
+Dashboard features include:
+
+- KPI cards
+- Interactive charts and tables
+- Month, Quarter and Year slicers
+- Country, Segment and IsChurned slicers
+- Bookmark-based visual toggles
+- Page navigation
+- Conditional formatting
+- DAX measures
+
+---
+
+## 📊 Power BI Dashboard Structure
+
+### Page 1 – Home Page
+
+- Project introduction and overview.
+- Navigation to Business Overview and RFM Analysis.
+- Key metrics glossary explaining Recency, Frequency, Monetary, Customer Value and Churned %.
+
+### Page 2 – Business Overview
+
+Provides an overview of customer and revenue performance through KPI cards, charts and interactive filters.
+
+**Key Performance Indicators:**
+
+- Total Customers
+- Total Revenue
+- Churned %
+- Average Customer Value
+
+**Visualisations:**
+
+- Customer Retention by Segment
+- Revenue Retention by Segment
+- Total Customers by Segment
+- Total Revenue by Segment
+- Monthly, quarterly and yearly customer trends
+- Monthly, quarterly and yearly revenue trends
+
+Includes a bookmark-based toggle to switch between customer and revenue analysis.
+
+### Page 3 – RFM Analysis
+
+Focuses on customer segmentation, geographic performance and RFM metrics.
+
+**Segment Analysis:**
+
+- Average Customer Value by Segment
+- Segment Performance Summary
+- Customer count by segment
+- Revenue contribution by segment
+- Average Recency, Frequency and Monetary scores
+
+**Country Analysis:**
+
+- Top 5 Countries by Average Customer Value
+- Country Performance Summary
+- Top 10 Countries by Revenue
+- Customer count by country
+- Average RFM scores by country
+
+**Churn Analysis:**
+
+- Monthly Churn %
+- Quarterly Churn %
+- Yearly Churn %
+
+The dashboard supports interactive filtering across Month, Quarter, Year, Country, Segment and Churn Status.
+
+---
+
+## 📈 Key Project Results
+
+| Metric | Result |
+|---|---:|
+| Total Customers | 5,881 |
+| Final Transaction Records | 779,495 |
+| Total Revenue | £17M (rounded dashboard display) |
+| Average Customer Value | £2,954 (rounded dashboard display) |
+| Churned Customers (%) | 50.9% (rounded dashboard display) |
+| Customer Segments | 6 |
+
+*These are the overall dashboard figures shown in the current project version. Results can change when report filters are applied.*
+
+---
+
+## 🖼️ Dashboard Screenshots
+
+Dashboard screenshots are available in the `05 DASHBOARD SCREENSHOTS` folder.
+
+The screenshots demonstrate the Home Page, Business Overview, Revenue Analysis, Customer Analysis, Segment Analysis and Country Analysis.
+
+---
+
+## 📁 Repository Structure
+
+```text
+IKEA-Gifting-Customer-Analytics/
+│
+├── 01 IKEA Gifting BRD.docx
+│
+├── 02 SQLQuery.sql
+│
+├── 03 Python IKEA RFM segmentation.ipynb
+│
+├── 04 IKEA DASHBOARD.pbix
+│
+├── 05 DASHBOARD SCREENSHOTS/
+│
+├── 06 IKEA Gifting Dataset.zip
+│
+└── README.md
+```
+
+## 📌 Project Files
+
+| File | Description |
+|---|---|
+| 01 IKEA Gifting BRD.docx | Business requirements and project objectives |
+| 02 SQLQuery.sql | SQL data integration, cleaning and validation |
+| 03 Python IKEA RFM segmentation.ipynb | Python preprocessing, RFM calculations, scoring and segmentation |
+| 04 IKEA DASHBOARD.pbix | Interactive Power BI dashboard |
+| 05 DASHBOARD SCREENSHOTS | Dashboard page screenshots |
+| 06 IKEA Gifting Dataset.zip | Dataset files used for the project |
+
+**Generated Output:** `EcommerceDashboardData.xlsx` is generated by executing the final cell of the Python notebook. This file is used as the data source for the Power BI dashboard and is not separately included in the repository.
+
+---
+
+## 🎓 Key Learnings
+
+Through this project, I gained practical experience in:
+
+- Working with large retail transaction datasets.
+- Integrating and cleaning data using SQL Server.
+- Performing data quality checks and validation.
+- Using SQL window functions for duplicate identification.
+- Using Python and Pandas for customer-level analysis.
+- Understanding Recency, Frequency and Monetary calculations.
+- Implementing RFM scoring and customer segmentation.
+- Identifying churn using a fixed inactivity threshold.
+- Creating interactive dashboards using Power BI.
+- Writing DAX measures for business KPIs.
+- Understanding how business requirements connect with technical analysis and visualisation.
+
+---
+
+## 👩‍💻 Author
+
+**Kashish Baghel**
+
+Aspiring Data Analyst
+
+GitHub: [kashishbaghel07](https://github.com/kashishbaghel07)
+
+**Project Learning Reference:** Mansi G. – [YouTube Channel](https://www.youtube.com/@Mansi.goel.offical)
+
